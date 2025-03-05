@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>puiche培歪中學</title>
-    <link rel="icon" href="download.png" type="image/png"> <!-- 書籤圖標 -->
+    <link rel="icon" href="https://github.com/puiche/puiche.github.io/raw/main/puiche_icon1new.png" type="image/png"> <!-- 書籤圖標 -->
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -17,19 +17,52 @@
         }
         h1 {
             color: white;
-            background-color: #d32f2f; /* 使用更深的紅色 */
+            background-color: #d32f2f; /* 標題背景顏色 */
             font-size: 3em; /* 字體大小調整 */
             margin: 0;
             padding: 20px; /* 增加內邊距 */
             border-radius: 0 0 10px 10px; /* 圓角 */
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 增加陰影效果 */
+            position: relative; /* 使標題相對定位 */
+            overflow: hidden; /* 隱藏溢出部分 */
+        }
+        .side-image {
+            position: absolute; /* 絕對定位 */
+            top: 25%; /* 調整圖片位置，讓圖片靠上 */
+            transform: translateY(-50%); /* 調整位置 */
+            width: 80px; /* 設置圖片寬度 */
+            height: auto; /* 自動調整高度 */
+            background-color: #d32f2f; /* 背景顏色與標題一致 */
+        }
+        .left {
+            left: 20px; /* 左側圖片位置 */
+        }
+        .right {
+            right: 20px; /* 右側圖片位置 */
+        }
+        .image-container {
+            position: relative; /* 使圖片容器相對定位 */
+            max-width: 600px; /* 設置最大寬度 */
+            margin: 20px auto; /* 中心顯示 */
+        }
+        .image-wrapper {
+            display: none; /* 隱藏所有圖片和描述 */
+            text-align: center; /* 文字居中 */
+        }
+        .image-wrapper.active {
+            display: block; /* 顯示當前活動的圖片和描述 */
         }
         img {
-            max-width: 90%; /* 設置圖片最大寬度 */
+            max-width: 95%; /* 設置圖片最大寬度為95% */
             height: auto;
             margin: 20px 0; /* 上下邊距 */
-            border-radius: 10px; /* 圓角 */
+            border-radius: 10px; /* 圆角 */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 增加陰影效果 */
+        }
+        .image-description {
+            margin: 5px 0; /* 描述的上下邊距 */
+            font-size: 1.2em; /* 描述字體大小 */
+            color: #FFFFFF; /* 描述字體顏色 */
         }
         .tabs {
             display: flex;
@@ -58,7 +91,7 @@
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 8px;
-            background-color: white;
+            background-color: white; /* 預設背景顏色 */
             display: none;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             color: #333;
@@ -81,6 +114,13 @@
             background-color: white;
             color: black;
         }
+        .dark-mode .content {
+            background-color: #c62828; /* 深色模式下內容的背景顏色 */
+            color: white; /* 深色模式下內容的文字顏色 */
+        }
+        .dark-mode .news-link {
+            color: white; /* 深色模式下新聞連結的顏色 */
+        }
         .toggle-button {
             margin: 20px;
             padding: 10px 20px;
@@ -96,16 +136,100 @@
         .toggle-button:hover {
             background-color: #555; /* 懸停效果 */
         }
+        .nav-buttons {
+            margin: 10px; /* 按鈕的邊距 */
+        }
+        .news-item {
+            display: flex; /* 使用flexbox布局 */
+            align-items: center; /* 垂直居中對齊 */
+            margin: 10px 0; /* 每個新聞項目的上下邊距 */
+            width: 100%; /* 設置寬度為100% */
+        }
+        .news-item img {
+            width: 50%; /* 設置圖片寬度為50% */
+            height: auto; /* 自動調整高度 */
+            margin-right: 20px; /* 增加圖片和文本之間的距離 */
+        }
+        .news-item div {
+            width: 50%; /* 設置文字區域寬度為50% */
+            text-align: left; /* 文字左對齊 */
+        }
+        .news-link {
+            text-decoration: none; /* 去除超連結下劃線 */
+            color: #d32f2f; /* 超連結顏色 */
+            font-size: 1.5em; /* 放大字體大小 */
+        }
+        .news-date {
+            display: inline-block; /* 設置為區塊級元素 */
+            background-color: #e57373; /* 標籤背景色 */
+            color: white; /* 標籤文字顏色 */
+            padding: 5px 10px; /* 標籤內邊距 */
+            border-radius: 5px; /* 圓角 */
+            font-size: 0.9em; /* 字體大小 */
+            margin-top: 5px; /* 上邊距 */
+        }
+        h2 {
+            text-align: left; /* 左對齊 */
+            font-size: 2em; /* 增大字體大小 */
+            margin: 20px 0; /* 增加上下邊距 */
+            color: black; /* 將標題顏色設為黑色 */
+        }
+        /* 深色模式下新聞標題顏色 */
+        .dark-mode h2 {
+            color: white; /* 在深色模式下變為白色 */
+        }
     </style>
 </head>
 <body>
-<h1>培歪中學頭條新聞</h1>
-<img src="https://github.com/erika-nazi/erika-nazi.github.io/raw/main/fatchan2.png" alt="圖片描述"/>
+<h1>
+    <a href="index.html">
+        <img src="https://github.com/puiche/puiche.github.io/raw/main/puiche_icon1new.png" alt="左側圖片" class="side-image left"/>
+    </a>
+    培歪中學 PuiCheMiddleSchool
+</h1>
+
+<!-- 圖片輪換區域 -->
+<div class="image-container">
+    <div class="image-wrapper active">
+        <img src="https://github.com/puiche/puiche.github.io/raw/main/fatchan2.png" alt="第一張圖片" />
+        <div class="image-description">
+            <a href="javascript:void(0);" onclick="changeTab(3, 'worldwar2')" style="color: #FFFFFF; text-decoration: underline;">本校陳建雄老師於2025年3月5日當任美國第四十八屆總統</a>
+        </div>
+    </div>
+
+    <div class="image-wrapper">
+        <img src="https://github.com/puiche/puiche.github.io/raw/main/lam.jpg" alt="第二張圖片" />
+        <div class="image-description">
+            <a href="javascript:void(0);" onclick="changeTab(3, 'worldwar2')" style="color: #FFFFFF; text-decoration: underline;">林建幫主任舉辦獎學金大會</a>
+        </div>
+    </div>
+
+    <div class="image-wrapper">
+        <img src="https://github.com/puiche/puiche.github.io/raw/main/longkitchen.png" alt="第三張圖片" />
+        <div class="image-description">
+            <a href="javascript:void(0);" onclick="changeTab(3, 'worldwar2')" style="color: #FFFFFF; text-decoration: underline;">本校奧數組參加學界比賽再奪佳績</a>
+        </div>
+    </div>
+
+    <div class="image-wrapper">
+        <img src="https://github.com/puiche/puiche.github.io/raw/main/wisleypuiche.png" alt="第四張圖片" />
+        <div class="image-description">
+            <a href="javascript:void(0);" onclick="changeTab(3, 'worldwar2')" style="color: #FFFFFF; text-decoration: underline;">本校余文軒同學參加全國歌唱比賽勇奪全場總冠軍</a>
+        </div>
+    </div>
+</div>
+
+<div class="nav-buttons">
+    <button class="toggle-button" onclick="prevImage()">上一個</button>
+    <button class="toggle-button" onclick="nextImage()">下一個</button>
+</div>
+
+<!-- 分頁標籤 -->
 <div class="tabs">
     <div class="tab active" onclick="changeTab(0, 'home')">主頁</div>
     <div class="tab" onclick="changeTab(1, 'history')">歷史背景</div>
     <div class="tab" onclick="changeTab(2, 'thought')">主觀意識</div>
-    <div class="tab" onclick="changeTab(3, 'worldwar2')">WW2</div>
+    <div class="tab" onclick="changeTab(3, 'worldwar2')">熱門新聞</div>
     <div class="tab" onclick="changeTab(4, 'person')">重要人物</div>
     <div class="tab" onclick="changeTab(5, 'references')">參考資料</div>
 </div>
@@ -113,13 +237,68 @@
 <div class="content active" id="content0">這是主頁的內容。</div>
 <div class="content" id="content1">這是歷史背景的內容。</div>
 <div class="content" id="content2">這是主觀意識的內容。</div>
-<div class="content" id="content3">這是WW2的內容。</div>
+<div class="content" id="content3">
+    <h2>熱門新聞</h2>
+    <div class="news-item">
+        <img src="https://github.com/puiche/puiche.github.io/raw/main/fatchan2.png" alt="新聞1" />
+        <div>
+            <a href="https://example.com/news1" class="news-link">本校陳建雄老師於2025年3月5日當任美國第四十八屆總統</a>
+            <span class="news-date">2025年3月5日</span>
+        </div>
+    </div>
+    <div class="news-item">
+        <img src="https://github.com/puiche/puiche.github.io/raw/main/lam.jpg" alt="新聞2" />
+        <div>
+            <a href="https://example.com/news2" class="news-link">林建幫主任舉辦獎學金大會</a>
+            <span class="news-date">2025年3月6日</span>
+        </div>
+    </div>
+    <div class="news-item">
+        <img src="https://github.com/puiche/puiche.github.io/raw/main/longkitchen.png" alt="新聞3" />
+        <div>
+            <a href="https://example.com/news3" class="news-link">本校奧數組參加學界比賽再奪佳績</a>
+            <span class="news-date">2025年3月7日</span>
+        </div>
+    </div>
+    <div class="news-item">
+        <img src="https://github.com/puiche/puiche.github.io/raw/main/wisleypuiche.png" alt="新聞4" />
+        <div>
+            <a href="https://example.com/news4" class="news-link">本校余文軒同學參加全國歌唱比賽勇奪全場總冠軍</a>
+            <span class="news-date">2025年3月8日</span>
+        </div>
+    </div>
+</div>
 <div class="content" id="content4">這是重要人物的內容。</div>
 <div class="content" id="content5">這是參考資料的內容。</div>
 
 <button class="toggle-button" id="modeToggle" onclick="toggleDarkMode()">切換深色模式</button>
 
 <script>
+    const imageContainer = document.querySelector('.image-container');
+    const navButtons = document.querySelector('.nav-buttons');
+    const imageWrappers = document.querySelectorAll('.image-wrapper');
+    let currentIndex = 0; // 初始顯示第一張圖片
+
+    function updateImage() {
+        // 隱藏所有圖片和描述
+        imageWrappers.forEach((wrapper) => {
+            wrapper.classList.remove('active');
+        });
+
+        // 顯示當前圖片和描述
+        imageWrappers[currentIndex].classList.add('active');
+    }
+
+    function prevImage() {
+        currentIndex = (currentIndex > 0) ? currentIndex - 1 : imageWrappers.length - 1; // 確保循環
+        updateImage();
+    }
+
+    function nextImage() {
+        currentIndex = (currentIndex < imageWrappers.length - 1) ? currentIndex + 1 : 0; // 確保循環
+        updateImage();
+    }
+
     function changeTab(index, path) {
         const contents = document.querySelectorAll('.content');
         const tabs = document.querySelectorAll('.tab');
@@ -133,6 +312,15 @@
         // 顯示當前選擇的內容和標籤
         contents[index].classList.add('active');
         tabs[index].classList.add('active');
+
+        // 隱藏圖片區域和按鈕，除了主頁
+        if (index === 0) {
+            imageContainer.style.display = 'block'; // 主頁時顯示圖片區域
+            navButtons.style.display = 'block'; // 主頁時顯示按鈕
+        } else {
+            imageContainer.style.display = 'none'; // 其他分頁時隱藏圖片區域
+            navButtons.style.display = 'none'; // 其他分頁時隱藏按鈕
+        }
 
         // 更新 URL，替換原有的 URL
         const newUrl = `${window.location.origin}${window.location.pathname.split('/').slice(0, -1).join('/')}/${path}`;
